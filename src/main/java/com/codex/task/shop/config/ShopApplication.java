@@ -18,7 +18,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 public class ShopApplication {
 
 	public static void main(String[] args) {
-		ApplicationContext ctx = SpringApplication.run(ShopApplication.class, args);
+		SpringApplication.run(ShopApplication.class, args);
 	}
 
 
