@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "jwt.token.secret",
+      "type": "java.lang.String",
+      "defaultValue": "YmxvZ3NlY3JldGtleQ=="
+    },
+    {
+      "name": "jwt.validity.time.milliseconds",
+      "type": "java.lang.String",
+      "defaultValue": "3600000"
+    }
+  ] }
