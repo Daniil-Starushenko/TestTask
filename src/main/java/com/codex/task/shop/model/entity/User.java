@@ -25,7 +25,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private UserStatus status;
 
