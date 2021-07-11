@@ -27,11 +27,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**",
             "/configuration/ui",
             "/configuration/security",
-            "/swagger-ui.html",
+            "/swagger-ui.html**",
             "/webjars/**",
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/auth**"
+            "/signup"
     };
 
     @Bean
@@ -47,8 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .httpBasic().disable()
                 .csrf().disable()
+                .cors().disable()
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST)
                 .permitAll()
@@ -56,6 +56,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v2/api-docs/**");
+        web.ignoring().antMatchers("/swagger.json");
+        web.ignoring().antMatchers("/swagger-ui.html");
+        web.ignoring().antMatchers("/swagger-resources/**");
+        web.ignoring().antMatchers("/webjars/**");
     }
 
     @Bean
