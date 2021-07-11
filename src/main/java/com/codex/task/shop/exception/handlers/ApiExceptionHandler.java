@@ -1,5 +1,7 @@
 package com.codex.task.shop.exception.handlers;
 
+import com.codex.task.shop.exception.ApiException;
+import com.codex.task.shop.exception.auth.AuthException;
 import com.codex.task.shop.model.dto.ApiExceptionDto;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -33,11 +35,13 @@ import java.time.LocalDateTime;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    @ExceptionHandler(EntityNotFoundException.class)
-//    public ApiExceptionDto handleEntityNotFoundException(ApiException ex) {
-//        return ApiExceptionDto.of(ex);
-//    }
+    //TODO make exception resolvers
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AuthException.class)
+    public ApiExceptionDto handleEntityNotFoundException(ApiException ex) {
+        return ApiExceptionDto.of(ex);
+    }
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
