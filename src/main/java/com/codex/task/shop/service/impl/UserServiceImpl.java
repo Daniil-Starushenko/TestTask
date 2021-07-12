@@ -21,11 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
 
     @Override

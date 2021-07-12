@@ -14,6 +14,7 @@ public class ProductCreateDto {
 
     @NotNull
     private String description;
+
     private String[] tags;
 
 }

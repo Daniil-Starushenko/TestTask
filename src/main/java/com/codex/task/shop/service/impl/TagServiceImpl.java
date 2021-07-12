@@ -15,8 +15,9 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class TagServiceImpl implements TagService {
 
-    ModelMapper modelMapper;
-    TagRepository tagRepository;
+    private ModelMapper modelMapper;
+
+    private TagRepository tagRepository;
 
     @Override
     public void createTag(TagCreateDto tagDto) {

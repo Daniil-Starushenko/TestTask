@@ -5,7 +5,6 @@ import com.codex.task.shop.model.dto.TagCreateDto;
 import com.codex.task.shop.service.ProductService;
 import com.codex.task.shop.service.TagService;
 import lombok.AllArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,23 +14,17 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class AdminController {
 
-    TagService tagService;
-
-    ProductService productService;
+    private TagService tagService;
+    private ProductService productService;
 
     @PostMapping("/product")
-    public void createProduct(@RequestBody ProductCreateDto productDto) {
+    public void createProduct(@Valid @RequestBody ProductCreateDto productDto) {
         productService.createProduct(productDto);
     }
 
     @PostMapping("/tag")
     public void createTag(@Valid @RequestBody TagCreateDto tagDto) {
         tagService.createTag(tagDto);
-    }
-
-    @PatchMapping("/article")
-    public void updateArticle() {
-
     }
 
 }
