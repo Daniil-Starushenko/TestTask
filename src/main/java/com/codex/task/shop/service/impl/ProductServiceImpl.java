@@ -3,6 +3,7 @@ package com.codex.task.shop.service.impl;
 import com.codex.task.shop.exception.entity.EntityIsExistException;
 import com.codex.task.shop.exception.entity.EntityNotFoundException;
 import com.codex.task.shop.model.dto.ProductCreateDto;
+import com.codex.task.shop.model.dto.ProductDto;
 import com.codex.task.shop.model.entity.Product;
 import com.codex.task.shop.model.entity.Tag;
 import com.codex.task.shop.repository.mysql.ProductRepository;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,6 +41,15 @@ public class ProductServiceImpl implements ProductService {
             productToCreate.setTags(findTags(productDto.getTags()));
         }
         productRepository.save(productToCreate);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProductDto findById(Integer id) {
+        log.info("try to find product with id: {}", id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("product with id is not  found: " + id));
+        return modelMapper.map(product, ProductDto.class);
     }
 
     private Set<Tag> findTags(String[] tags) {
