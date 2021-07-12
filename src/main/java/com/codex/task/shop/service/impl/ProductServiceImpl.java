@@ -80,4 +80,10 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(productToChange);
     }
 
+    @Override
+    public void deleteProductById(Integer id) {
+        log.info("try to delete product with id {}", id);
+        productRepository.deleteById(id);
+    }
+
 }

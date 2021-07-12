@@ -34,4 +34,9 @@ public class AdminController {
         productService.updateProduct(id, productDto);
     }
 
+    @DeleteMapping("/product/{id}")
+    public void deleteProduct(@RequestParam("id") Integer id) {
+        productService.deleteProductById(id);
+    }
+
 }
