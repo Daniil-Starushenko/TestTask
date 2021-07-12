@@ -7,12 +7,13 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @ToString
-public class UserSignInDto {
+public class ProductCreateDto {
 
     @NotNull
-    private String email;
+    private String name;
 
     @NotNull
-    private String password;
+    private String description;
+    private String[] tags;
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,12 +28,12 @@ public class AuthController {
 
 
     @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void signup(@RequestBody UserSignUpDto userSignUp) {
+    public void signup(@Valid @RequestBody UserSignUpDto userSignUp) {
         userService.createUser(userSignUp);
     }
 
     @PostMapping(value = "/signin")
-    public ResponseEntity login(@RequestBody UserSignInDto request) {
+    public ResponseEntity login(@Valid @RequestBody UserSignInDto request) {
         String username = request.getEmail();
         UserDto currentUser = userService.findUserByEmail(username);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, request.getPassword()));

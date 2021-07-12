@@ -1,7 +1,7 @@
 package com.codex.task.shop.service.impl;
 
 import com.codex.task.shop.exception.entity.EntityIsExistException;
-import com.codex.task.shop.model.dto.TagCreationDto;
+import com.codex.task.shop.model.dto.TagCreateDto;
 import com.codex.task.shop.model.entity.Tag;
 import com.codex.task.shop.repository.mysql.TagRepository;
 import com.codex.task.shop.service.TagService;
@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
 
 @Slf4j
 @Service
@@ -20,10 +19,11 @@ public class TagServiceImpl implements TagService {
     TagRepository tagRepository;
 
     @Override
-    public void createTag(TagCreationDto tagDto) {
-        if (tagRepository.existsByValue(tagDto.getValue())) {
-            log.info("tag with value {} is  exist", tagDto.getValue());
-            throw new EntityIsExistException("tag with value is exist: " + tagDto.getValue());
+    public void createTag(TagCreateDto tagDto) {
+        String tagValue = tagDto.getValue().toUpperCase();
+        if (tagRepository.existsByValue(tagValue)) {
+            log.info("tag with value {} is  exist", tagValue);
+            throw new EntityIsExistException("tag with value is exist: " + tagValue);
         }
         Tag tag = modelMapper.map(tagDto, Tag.class);
         log.info("try to save tag");
