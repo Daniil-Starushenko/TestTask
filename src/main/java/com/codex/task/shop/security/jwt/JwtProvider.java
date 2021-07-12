@@ -1,7 +1,7 @@
 package com.codex.task.shop.security.jwt;
 
 import com.codex.task.shop.exception.auth.JwtAuthenticationException;
-import com.codex.task.shop.model.entity.UserStatus;
+import com.codex.task.shop.model.entity.Role;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,7 +36,7 @@ public class JwtProvider {
     private UserDetailsService userDetailsService;
 
 
-    public String createToken(String email, UserStatus role) {
+    public String createToken(String email, Role role) {
 
         Claims claims = Jwts.claims().setSubject(email);
         claims.put(ROLE_CLAIM, role.getAuthority());

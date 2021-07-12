@@ -2,10 +2,9 @@ package com.codex.task.shop.model.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Entity;
 import java.util.Arrays;
 
-public enum UserStatus implements GrantedAuthority {
+public enum Role implements GrantedAuthority {
     ADMIN,
     USER;
 
@@ -15,8 +14,8 @@ public enum UserStatus implements GrantedAuthority {
     }
 
     public static String[] getAllAuthorities() {
-        return Arrays.stream(UserStatus.values()).
-                map(UserStatus::getAuthority)
+        return Arrays.stream(Role.values()).
+                map(Role::getAuthority)
                 .toArray(String[]::new);
     }
 }

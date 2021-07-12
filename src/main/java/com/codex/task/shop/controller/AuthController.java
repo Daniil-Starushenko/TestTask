@@ -1,19 +1,15 @@
 package com.codex.task.shop.controller;
 
-import com.codex.task.shop.exception.entity.EntityNotFoundException;
 import com.codex.task.shop.model.dto.UserDto;
 import com.codex.task.shop.model.dto.UserSignInDto;
 import com.codex.task.shop.model.dto.UserSignUpDto;
-import com.codex.task.shop.model.entity.User;
 import com.codex.task.shop.security.jwt.JwtProvider;
 import com.codex.task.shop.service.UserService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

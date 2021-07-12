@@ -27,7 +27,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private UserStatus status;
+    private Role status;
 
     @OneToOne(mappedBy = "user")
     @EqualsAndHashCode.Exclude

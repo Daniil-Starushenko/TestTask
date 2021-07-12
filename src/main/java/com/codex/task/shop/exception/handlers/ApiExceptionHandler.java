@@ -2,6 +2,7 @@ package com.codex.task.shop.exception.handlers;
 
 import com.codex.task.shop.exception.ApiException;
 import com.codex.task.shop.exception.auth.AuthException;
+import com.codex.task.shop.exception.entity.EntityIsExistException;
 import com.codex.task.shop.model.dto.ApiExceptionDto;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -39,7 +40,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(AuthException.class)
-    public ApiExceptionDto handleEntityNotFoundException(ApiException ex) {
+    public ApiExceptionDto handleAuthException(ApiException ex) {
+        return ApiExceptionDto.of(ex);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(EntityIsExistException.class)
+    public ApiExceptionDto handleEntityExistException(ApiException ex) {
         return ApiExceptionDto.of(ex);
     }
 

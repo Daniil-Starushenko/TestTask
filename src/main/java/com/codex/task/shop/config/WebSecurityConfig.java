@@ -1,5 +1,6 @@
 package com.codex.task.shop.config;
 
+import com.codex.task.shop.model.entity.Role;
 import com.codex.task.shop.security.jwt.JwtFilter;
 import com.codex.task.shop.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -50,7 +52,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .cors().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
+                .antMatchers("/admin/**").hasAuthority(Role.ADMIN.getAuthority())
+                .antMatchers("/user/**").hasAnyAuthority(Role.getAllAuthorities())
                 .antMatchers(AUTH_WHITELIST)
                 .permitAll()
                 .anyRequest()
