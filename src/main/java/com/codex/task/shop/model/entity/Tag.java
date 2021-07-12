@@ -19,7 +19,7 @@ public class Tag {
     private String value;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany
     private Set<Product> products;
 
 }

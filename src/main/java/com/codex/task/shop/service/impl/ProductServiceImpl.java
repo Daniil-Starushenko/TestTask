@@ -2,6 +2,7 @@ package com.codex.task.shop.service.impl;
 
 import com.codex.task.shop.exception.entity.EntityIsExistException;
 import com.codex.task.shop.exception.entity.EntityNotFoundException;
+import com.codex.task.shop.model.dto.ProductChangeDto;
 import com.codex.task.shop.model.dto.ProductCreateDto;
 import com.codex.task.shop.model.dto.ProductDto;
 import com.codex.task.shop.model.entity.Product;
@@ -20,6 +21,7 @@ import java.util.Set;
 
 @Slf4j
 @Service
+@Transactional
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
@@ -52,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
         return modelMapper.map(product, ProductDto.class);
     }
 
+
     private Set<Tag> findTags(String[] tags) {
         Set<Tag> tagSet = new HashSet<>();
         log.info("try to find tags");
@@ -62,6 +65,19 @@ public class ProductServiceImpl implements ProductService {
             );
         }
         return tagSet;
+    }
+
+    @Override
+    public void updateProduct(Integer id, ProductChangeDto productDto) {
+        Product productToChange = productRepository.getById(id);
+        log.info("try to change info in product with id {}", id);
+        productToChange.setName(productDto.getName());
+        productToChange.setDescription(productDto.getDescription());
+        productToChange.getTags().clear();
+        if (productDto.getTags().length != 0) {
+            productToChange.setTags(findTags(productDto.getTags()));
+        }
+        productRepository.save(productToChange);
     }
 
 }

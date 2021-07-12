@@ -1,5 +1,6 @@
 package com.codex.task.shop.controller;
 
+import com.codex.task.shop.model.dto.ProductChangeDto;
 import com.codex.task.shop.model.dto.ProductCreateDto;
 import com.codex.task.shop.model.dto.TagCreateDto;
 import com.codex.task.shop.service.ProductService;
@@ -25,6 +26,12 @@ public class AdminController {
     @PostMapping("/tag")
     public void createTag(@Valid @RequestBody TagCreateDto tagDto) {
         tagService.createTag(tagDto);
+    }
+
+    @PatchMapping("/product/{id}")
+    public void changeProduct(@RequestParam("id") Integer id,
+                              @Valid @RequestBody ProductChangeDto productDto) {
+        productService.updateProduct(id, productDto);
     }
 
 }
