@@ -49,4 +49,20 @@ public class CartServiceImpl implements CartService {
         cart.getProducts().add(productToCart);
         cartRepository.save(cart);
     }
+
+    @Override
+    public void deleteFromCart(Integer productId, Principal principal) {
+        Product productToDelete = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("product with id is not exist: " + productId));
+        Cart cart = cartRepository.findByUserEmail(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException("cart is empty"));
+        if (!cart.getProducts().contains(productToDelete)) {
+            throw new EntityNotFoundException("cart doesnt contain");
+        }
+        cart.getProducts().remove(productToDelete);
+        cartRepository.save(cart);
+        if (cart.getProducts().isEmpty()) {
+            cartRepository.delete(cart);
+        }
+    }
 }

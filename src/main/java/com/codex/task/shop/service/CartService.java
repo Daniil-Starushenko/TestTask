@@ -6,4 +6,6 @@ public interface CartService {
 
     void productToCart(Integer productId, Principal principal);
 
+    void deleteFromCart(Integer productId, Principal principal);
+
 }

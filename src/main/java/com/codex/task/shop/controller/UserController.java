@@ -4,10 +4,7 @@ import com.codex.task.shop.model.dto.ProductDto;
 import com.codex.task.shop.service.CartService;
 import com.codex.task.shop.service.ProductService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -22,13 +19,19 @@ public class UserController {
 
     @GetMapping("/product/{id}")
     public ProductDto showProduct(@RequestParam("id") Integer id) {
-       return productService.findById(id);
+        return productService.findById(id);
     }
 
     @GetMapping("/cart/{productId}")
     public void addProductToCart(@RequestParam("productId") Integer id,
                                  Principal principal) {
         cartService.productToCart(id, principal);
+    }
+
+    @DeleteMapping("/cart/{productId}")
+    public void deleteProductFromCart(@RequestParam("productId") Integer id,
+                                      Principal principal) {
+        cartService.deleteFromCart(id, principal);
     }
 
 }

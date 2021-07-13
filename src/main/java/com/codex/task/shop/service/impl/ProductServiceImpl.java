@@ -5,8 +5,10 @@ import com.codex.task.shop.exception.entity.EntityNotFoundException;
 import com.codex.task.shop.model.dto.ProductChangeDto;
 import com.codex.task.shop.model.dto.ProductCreateDto;
 import com.codex.task.shop.model.dto.ProductDto;
+import com.codex.task.shop.model.entity.Cart;
 import com.codex.task.shop.model.entity.Product;
 import com.codex.task.shop.model.entity.Tag;
+import com.codex.task.shop.repository.mysql.CartRepository;
 import com.codex.task.shop.repository.mysql.ProductRepository;
 import com.codex.task.shop.repository.mysql.TagRepository;
 import com.codex.task.shop.service.ProductService;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -27,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
 
     private ModelMapper modelMapper;
     private ProductRepository productRepository;
+    private CartRepository cartRepository;
     private TagRepository tagRepository;
 
     @Override
@@ -83,6 +87,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProductById(Integer id) {
         log.info("try to delete product with id {}", id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("there is no such products"));
+
+        List<Cart> cartsWithProduct = cartRepository.findAllByProductsIsContaining(product);
+
+        if (!cartsWithProduct.isEmpty()) {
+            cartsWithProduct.forEach(
+                    cart -> cart.getProducts().remove(product)
+            );
+            cartsWithProduct.forEach(
+                    cart -> cartRepository.save(cart)
+            );
+        }
         productRepository.deleteById(id);
     }
 
