@@ -13,9 +13,14 @@ import com.codex.task.shop.repository.mysql.CartRepository;
 import com.codex.task.shop.repository.mysql.ProductRepository;
 import com.codex.task.shop.repository.mysql.TagRepository;
 import com.codex.task.shop.service.ProductService;
+import com.codex.task.shop.service.specification.DescriptionSpecification;
+import com.codex.task.shop.service.specification.TagSpecification;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -127,5 +132,16 @@ public class ProductServiceImpl implements ProductService {
         }
         productRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Product> filterProducts(Pageable pageable, String tagValue, String description) {
+        Tag tag = tagRepository.findByValue(tagValue)
+                .orElseThrow(() -> new EntityNotFoundException("no such tag"));
+        Specification<Product> specification =
+                Specification.where(new TagSpecification(tag))
+                .and(new DescriptionSpecification(description));
+        return productRepository.findAll(specification, pageable);
+    }
+
 
 }

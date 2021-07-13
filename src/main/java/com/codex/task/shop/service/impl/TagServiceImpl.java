@@ -28,6 +28,7 @@ public class TagServiceImpl implements TagService {
             log.info("tag with value {} is  exist", tagValue);
             throw new EntityIsExistException("tag with value is exist: " + tagValue);
         }
+        tagDto.setValue(tagValue);
         Tag tag = modelMapper.map(tagDto, Tag.class);
         log.info("try to save tag");
         tagRepository.save(tag);
