@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 public class EmailBuilder {
 
     public String generateEmail(ProductChangeDto productDto) {
-        return "there is a product " + productDto + " in your cart" +
-                "that was changed: " + System.lineSeparator() +
-                productDto.getName() + System.lineSeparator() +
-                productDto.getDescription() + System.lineSeparator();
+        return "<p>there is a product " + "<i>" + productDto.getName() + "</i>" + " in your cart " +
+                "that was changed: </p>" + "<p>" +
+                "name: " + productDto.getName() + "</p>" +
+                "<p>description: " + productDto.getDescription() + "</p>";
     }
 }
