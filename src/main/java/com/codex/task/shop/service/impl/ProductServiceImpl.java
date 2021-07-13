@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
         if (!carts.isEmpty()) {
             carts.forEach(
                     cart -> emailService.send(
-                            cart.getUser().getEmail(), emailBuilder.generateEmail(productDto))
+                            cart.getUser().getEmail(), emailBuilder.productChangingEmail(productDto))
             );
         }
         productRepository.save(changeInfoFromDto(productToChange, productDto));

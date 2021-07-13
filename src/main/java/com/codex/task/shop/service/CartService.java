@@ -8,4 +8,6 @@ public interface CartService {
 
     void deleteFromCart(Integer productId, Principal principal);
 
+    void buyProductsInCart(Principal principal);
+
 }

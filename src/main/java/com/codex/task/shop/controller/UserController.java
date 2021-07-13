@@ -34,4 +34,9 @@ public class UserController {
         cartService.deleteFromCart(id, principal);
     }
 
+    @GetMapping("/cart")
+    public void buyProductsInCart(Principal principal) {
+        cartService.buyProductsInCart(principal);
+    }
+
 }

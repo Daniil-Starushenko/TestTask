@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,6 +25,8 @@ import java.util.HashSet;
 @AllArgsConstructor
 public class CartServiceImpl implements CartService {
 
+    private EmailService emailService;
+    private EmailBuilder emailBuilder;
     private ProductRepository productRepository;
     private CartRepository cartRepository;
     private UserRepository userRepository;
@@ -63,4 +67,31 @@ public class CartServiceImpl implements CartService {
             cartRepository.delete(cart);
         }
     }
+
+    @Override
+    public void buyProductsInCart(Principal principal) {
+        log.info("try to find cart and buy products");
+        String userEmail = principal.getName();
+        Cart cart = cartRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("cart of user "
+                        + userEmail + " is empty"));
+        if (cart.getProducts().isEmpty()) {
+            cartRepository.delete(cart);
+            throw new EntityNotFoundException("there is no products to buy in cart");
+        }
+        sendEmailWithProductList(cart, userEmail);
+
+        cart.setProducts(null);
+        cartRepository.save(cart);
+        cartRepository.delete(cart);
+    }
+
+    private void sendEmailWithProductList(Cart cart, String userEmail) {
+        List<String> productList = new ArrayList<>();
+        cart.getProducts().forEach(
+                product -> productList.add(product.getName())
+        );
+        emailService.send(userEmail, emailBuilder.productsBuyingEmail(productList));
+    }
+
 }
