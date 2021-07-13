@@ -23,14 +23,8 @@ import java.util.HashSet;
 @AllArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    private EmailBuilder emailBuilder;
-
-    private EmailService emailService;
-
     private ProductRepository productRepository;
-
     private CartRepository cartRepository;
-
     private UserRepository userRepository;
 
     @Override
@@ -50,7 +44,6 @@ public class CartServiceImpl implements CartService {
                 throw new EntityIsExistException("product is exist in the cart");
             }
         }
-        emailService.send(user.getEmail(), emailBuilder.generateEmailWithCode());
         cart.getProducts().add(productToCart);
         cartRepository.save(cart);
     }

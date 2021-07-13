@@ -1,5 +1,6 @@
 package com.codex.task.shop.service.impl;
 
+import com.codex.task.shop.exception.entity.DisableChangeEntity;
 import com.codex.task.shop.exception.entity.EntityIsExistException;
 import com.codex.task.shop.exception.entity.EntityNotFoundException;
 import com.codex.task.shop.model.dto.ProductChangeDto;
@@ -28,6 +29,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private EmailService emailService;
+    private EmailBuilder emailBuilder;
     private ModelMapper modelMapper;
     private ProductRepository productRepository;
     private CartRepository cartRepository;
@@ -58,6 +61,41 @@ public class ProductServiceImpl implements ProductService {
         return modelMapper.map(product, ProductDto.class);
     }
 
+    @Override
+    public void forceProductUpdate(Integer id, ProductChangeDto productDto) {
+        Product productToChange = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("there is no such product to force update"));
+        log.info("try to force change info in product with id {}", id);
+        List<Cart> carts = cartRepository.findAllByProductsIsContaining(productToChange);
+        if (!carts.isEmpty()) {
+            carts.forEach(
+                    cart -> emailService.send(
+                            cart.getUser().getEmail(), emailBuilder.generateEmail(productDto))
+            );
+        }
+        productRepository.save(changeInfoFromDto(productToChange, productDto));
+    }
+
+    @Override
+    public void updateProduct(Integer id, ProductChangeDto productDto) {
+        Product productToChange = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("there is no such product to update"));
+        log.info("try to change info in product with id {}", id);
+        if (!cartRepository.findAllByProductsIsContaining(productToChange).isEmpty()) {
+            throw new DisableChangeEntity("product is situated in some cart");
+        }
+        productRepository.save(changeInfoFromDto(productToChange, productDto));
+    }
+
+    private Product changeInfoFromDto(Product product, ProductChangeDto productDto) {
+        product.setName(productDto.getName());
+        product.setDescription(productDto.getDescription());
+        product.getTags().clear();
+        if (productDto.getTags().length != 0) {
+            product.setTags(findTags(productDto.getTags()));
+        }
+        return product;
+    }
 
     private Set<Tag> findTags(String[] tags) {
         Set<Tag> tagSet = new HashSet<>();
@@ -69,19 +107,6 @@ public class ProductServiceImpl implements ProductService {
             );
         }
         return tagSet;
-    }
-
-    @Override
-    public void updateProduct(Integer id, ProductChangeDto productDto) {
-        Product productToChange = productRepository.getById(id);
-        log.info("try to change info in product with id {}", id);
-        productToChange.setName(productDto.getName());
-        productToChange.setDescription(productDto.getDescription());
-        productToChange.getTags().clear();
-        if (productDto.getTags().length != 0) {
-            productToChange.setTags(findTags(productDto.getTags()));
-        }
-        productRepository.save(productToChange);
     }
 
     @Override

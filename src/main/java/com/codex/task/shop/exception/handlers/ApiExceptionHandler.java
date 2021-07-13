@@ -2,6 +2,7 @@ package com.codex.task.shop.exception.handlers;
 
 import com.codex.task.shop.exception.ApiException;
 import com.codex.task.shop.exception.auth.AuthException;
+import com.codex.task.shop.exception.entity.DisableChangeEntity;
 import com.codex.task.shop.exception.entity.EntityIsExistException;
 import com.codex.task.shop.exception.entity.EntityNotFoundException;
 import com.codex.task.shop.model.dto.ApiExceptionDto;
@@ -52,6 +53,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(EntityIsExistException.class)
     public ApiExceptionDto handleEntityExistException(ApiException ex) {
+        return ApiExceptionDto.of(ex);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DisableChangeEntity.class)
+    public ApiExceptionDto handleDisableChangeEntityException(ApiException ex) {
         return ApiExceptionDto.of(ex);
     }
 

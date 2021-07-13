@@ -34,6 +34,12 @@ public class AdminController {
         productService.updateProduct(id, productDto);
     }
 
+    @PatchMapping("/product/forceUpdate/{id}")
+    public void forceChangeProduct(@RequestParam("id") Integer id,
+                                   @Valid @RequestBody ProductChangeDto productDto) {
+        productService.forceProductUpdate(id, productDto);
+    }
+
     @DeleteMapping("/product/{id}")
     public void deleteProduct(@RequestParam("id") Integer id) {
         productService.deleteProductById(id);
