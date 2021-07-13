@@ -17,6 +17,7 @@ import com.codex.task.shop.service.specification.DescriptionSpecification;
 import com.codex.task.shop.service.specification.TagSpecification;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.collection.spi.PersistentCollection;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,6 +64,10 @@ public class ProductServiceImpl implements ProductService {
         log.info("try to find product with id: {}", id);
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("product with id is not  found: " + id));
+        modelMapper.getConfiguration()
+                .setPropertyCondition(context ->
+                        !(context.getSource() instanceof PersistentCollection)
+                );
         return modelMapper.map(product, ProductDto.class);
     }
 

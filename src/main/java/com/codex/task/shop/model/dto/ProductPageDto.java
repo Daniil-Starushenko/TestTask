@@ -9,9 +9,6 @@ import java.util.List;
 @Builder
 public class ProductPageDto {
 
-    private Integer page;
-    private Integer pageLimit;
-    private long totalRecords;
     private List<ProductDto> products;
 
 }

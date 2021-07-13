@@ -2,6 +2,7 @@ package com.codex.task.shop.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.Set;
@@ -13,6 +14,7 @@ public class TagDto {
     private String value;
 
     @JsonBackReference
+    @EqualsAndHashCode.Exclude
     private Set<ProductDto> products;
 
 }
