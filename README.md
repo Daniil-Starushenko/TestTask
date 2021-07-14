@@ -10,5 +10,5 @@
 *  the `mailDev` was used to check how mail sending is work. 
 Mails was configured to send emails to the localhost. 
 MailDev can provide the messages that was confirmed on the localhost on port 1025.
-![alt text](img/maildev.png)
+![alt text](img/mailDev.png)
 
